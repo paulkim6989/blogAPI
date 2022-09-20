@@ -2,6 +2,7 @@ package com.example.blog.util;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,9 @@ import lombok.extern.slf4j.Slf4j;
 public class RestClient {
     
     @Autowired
-    private RestTemplateBuilder restTemplateBuilder; 
+    private RestTemplateBuilder restTemplateBuilder;
+
+    private Config globalConfig;
     
     /**
      * 
@@ -54,6 +57,7 @@ public class RestClient {
         RestTemplate restTemplate = restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(4)).build();
         ResponseEntity<E> response                      = null;
         ResponseData resData   							= null;
+        globalConfig = config;
         
         try {
 
@@ -76,6 +80,12 @@ public class RestClient {
             
             log.info("restURL -> {}",restURL);
             ResponseEntity<Map> responseEntity		= restTemplate.exchange(restURL, method, requestEntity, Map.class);
+            List<E> list = (List<E>)responseEntity.getBody().get(config.getDataField());
+
+            list.stream()
+                    .map(this::translate(config.getResponse()))
+                    .collect(Collectors.toList());
+
             Header header                           	= Header.builder().code(0).message("API 통신에 성공하였습니다.").build();
             resData 									= ResponseData.builder().header(header).body(responseEntity.getBody().get(config.getDataField())).build();
             response                                    = new ResponseEntity<E>((E)resData, HttpStatus.OK);
@@ -120,5 +130,14 @@ public class RestClient {
         
         return response;
         
+    }
+
+    private Map<String, String> translate(Map<String,String> response) {
+
+        HashMap<String, String> translatedMap = new HashMap<>(map);
+
+        translate(translatedMap, "id", "sample_id");
+        translate(translatedMap, "display", "sample");
+        return translatedMap;
     }
 }
