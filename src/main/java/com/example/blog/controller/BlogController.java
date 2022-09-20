@@ -1,5 +1,6 @@
 package com.example.blog.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,12 +56,12 @@ public class BlogController {
 									@RequestParam(value="apiName", required = false, defaultValue=defaultApiName) String apiName) throws Exception {
 	
 		ResponseEntity<ResponseData> response = null;
-		
+		Header header = null;
+		ResponseData resData = null;
+
 		ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build();
-		
-		response = this.validCheck(request);
-		
-		if (response.getBody().getHeader().getCode() == 0) {
+
+		if (this.validCheck(request).getCode() == 0) {
 		
 			try {
 				response = this.callApi(request);
@@ -85,8 +86,8 @@ public class BlogController {
 				}
 			} catch (Exception e) {
 				log.error("Exception::{}", e);
-	            Header header                               = Header.builder().code(3).message(e.getMessage()).build();                          
-	            ResponseData resData                        = ResponseData.builder().header(header).build();
+	            header                               = Header.builder().code(3).message(e.getMessage()).build();
+				resData                        = ResponseData.builder().header(header).build();
 	            response                                    = new ResponseEntity<ResponseData>(resData, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
@@ -97,10 +98,20 @@ public class BlogController {
 	@RequestMapping("/popularKeyword")
 	@ResponseBody
     public ResponseEntity<ResponseData> searchPopularKeyword() {
-		List<History> searchPopularKeyword = historyRepository.searchPopularKeyword();
-		Header header = Header.builder().code(0).message("조회에 성공하였습니다.").build();
-		ResponseData resData = ResponseData.builder().header(header).body(searchPopularKeyword).build();
-		ResponseEntity<ResponseData>response = new ResponseEntity<ResponseData>(resData, HttpStatus.OK);
+		ResponseEntity<ResponseData> response = null;
+		try {
+			List<History> searchPopularKeyword = historyRepository.searchPopularKeyword();
+			Map<String,Object> resultMap = new HashMap<String,Object>();
+			resultMap.put("resultList", searchPopularKeyword);
+			Header header = Header.builder().code(0).message("조회에 성공하였습니다.").build();
+			ResponseData resData = ResponseData.builder().header(header).body(resultMap).build();
+			response = new ResponseEntity<ResponseData>(resData, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Exception::{}", e);
+			Header header                               = Header.builder().code(3).message(e.getMessage()).build();
+			ResponseData resData                        = ResponseData.builder().header(header).build();
+			response                                    = new ResponseEntity<ResponseData>(resData, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
         return response;
     }
 	
@@ -119,7 +130,7 @@ public class BlogController {
 		return response;
     }
 	
-	public ResponseEntity<ResponseData> validCheck(ApiRequest request) {
+	public Header validCheck(ApiRequest request) {
 		Config config = configMap.get(request.getApiName());
 		Map<String,Map<String,String>>param = config.getParam();
 		Header header = Header.builder().code(0).message("Validation Check 정상").build();
@@ -130,10 +141,9 @@ public class BlogController {
 			header = Header.builder().code(1).message("결과 페이지 번호(page)는 " + param.get("page").get("max") + "보다 같거나 작아야 합니다.").build();
 		} else if (request.getSize() != null && request.getSize() > Integer.parseInt(param.get("size").get("max"))) {
 			header = Header.builder().code(1).message("한 페이지에 보여질 문서 수(size)는 "+param.get("size").get("max")+"보다 같거나 작아야 합니다.").build();
-		} 
-		
-        ResponseData resData                        = ResponseData.builder().header(header).build();
-		return new ResponseEntity<ResponseData>(resData, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return header;
 	}
 
 }
