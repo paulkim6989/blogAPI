@@ -37,7 +37,7 @@ public class RestClient {
     
     /**
      * 
-     * Statements
+     * 블로그 오픈 API Rest 통신 메소드
      *
      * @param <E>
      * @param <T>
