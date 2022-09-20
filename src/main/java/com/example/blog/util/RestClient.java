@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.example.blog.model.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Configuration;
@@ -41,14 +42,14 @@ public class RestClient {
      * @param <E>
      * @param <T>
      * @param restURL
-     * @param apiKey
+     * @param config
      * @param method
      * @param request
      * @param classOfResponse
      * @param mediaType
      * @return
      */
-    public <E, T> ResponseEntity<E> request( String restURL, List<Apikey> apiKey, HttpMethod method, T request,Class<E> classOfResponse,  MediaType mediaType )
+    public <E, T> ResponseEntity<E> request(String restURL, Config config, HttpMethod method, T request, Class<E> classOfResponse, MediaType mediaType )
     {
         RestTemplate restTemplate = restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(4)).build();
         ResponseEntity<E> response                      = null;
@@ -60,8 +61,8 @@ public class RestClient {
             headers.setContentType(mediaType);
             headers.setAccept(Collections.singletonList(new org.springframework.http.MediaType("application","json")));
             
-            if(apiKey!=null && apiKey.size() > 0) {
-            	for (Apikey a : apiKey) {
+            if(config.getApikey()!=null && config.getApikey().size() > 0) {
+            	for (Apikey a : config.getApikey()) {
             		log.info("Apikey -> {} : {}",a.getKey(),a.getValue());
             		headers.set(a.getKey(), a.getValue());
             	}
@@ -76,7 +77,7 @@ public class RestClient {
             log.info("restURL -> {}",restURL);
             ResponseEntity<Map> responseEntity		= restTemplate.exchange(restURL, method, requestEntity, Map.class);
             Header header                           	= Header.builder().code(0).message("API 통신에 성공하였습니다.").build();
-            resData 									= ResponseData.builder().header(header).body(responseEntity.getBody()).build();
+            resData 									= ResponseData.builder().header(header).body(responseEntity.getBody().get(config.getDataField())).build();
             response                                    = new ResponseEntity<E>((E)resData, HttpStatus.OK);
         
         }catch(HttpClientErrorException | HttpServerErrorException e) {

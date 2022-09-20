@@ -17,6 +17,7 @@ import lombok.Setter;
 public class Config {
 	private String name;
 	private String url;
+	private String dataField;
 	private List<Apikey> apikey;
 	private Map<String,Map<String,String>> param;
 	

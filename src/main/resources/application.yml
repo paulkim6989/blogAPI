@@ -43,6 +43,7 @@ api:
         size:
           name: size
           max: 50
+      dataField: document
 
     naver:      
       name: naver
@@ -65,3 +66,4 @@ api:
         size:
           name: display
           max: 100
+        dataField: item

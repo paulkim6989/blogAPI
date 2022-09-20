@@ -126,8 +126,7 @@ public class BlogController {
 		if (request.getSort() != null && param.get("sort").get(request.getSort()) !=null) reqUrl.queryParam(param.get("sort").get("name"), param.get("sort").get(request.getSort()));
 		if (request.getPage() != null) reqUrl.queryParam(param.get("page").get("name"), request.getPage());
 		if (request.getSize() != null) reqUrl.queryParam(param.get("size").get("name"), request.getSize());
-		ResponseEntity<ResponseData> response = restClient.request(reqUrl.build().toUriString(), config.getApikey(), HttpMethod.GET, null, ResponseData.class, MediaType.APPLICATION_JSON);
-		return response;
+		return restClient.request(reqUrl.build().toUriString(), config, HttpMethod.GET, null, ResponseData.class, MediaType.APPLICATION_JSON);
     }
 	
 	public Header validCheck(ApiRequest request) {
