@@ -1,7 +1,5 @@
 package com.example.blog.model;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Value;
 
 import lombok.AllArgsConstructor;
