@@ -129,7 +129,7 @@ public class BlogController {
 		return restClient.request(reqUrl.build().toUriString(), config, HttpMethod.GET, null, ResponseData.class, MediaType.APPLICATION_JSON);
     }
 	
-	public Header validCheck(ApiRequest request) {
+	public ResponseEntity<ResponseData> validCheck(ApiRequest request) {
 		Config config = configMap.get(request.getApiName());
 		Map<String,Map<String,String>>param = config.getParam();
 		Header header = Header.builder().code(0).message("Validation Check 정상").build();
@@ -142,7 +142,10 @@ public class BlogController {
 			header = Header.builder().code(1).message("한 페이지에 보여질 문서 수(size)는 "+param.get("size").get("max")+"보다 같거나 작아야 합니다.").build();
 		}
 
-		return header;
+		ResponseData resData = ResponseData.builder().header(header).build();
+		ResponseEntity<ResponseData> response = new ResponseEntity<ResponseData>(resData, HttpStatus.OK);
+
+		return response;
 	}
 
 }
