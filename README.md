@@ -34,8 +34,8 @@
         blogname | String | 블로그의 이름
         datetime | Datetime | 블로그 글 작성시간    
     
-  - #### multi module 구성
-    - ##### multi module 필요 정보 (application.yml 파일)
+  - #### Multi-module 구성
+    - ##### Multi-module 필요 정보 (application.yml 파일)
       - api > config 하단에 추가
       - module name (e.g kakao, naver)
       - name : module명
@@ -123,7 +123,7 @@
                 datetime: postdate
         ```
         
-    - ##### 멀티 모듈 통신 방식
+    - ##### Multi-module 통신 방식
       - apiName으로 전달 받은 모듈명 있으면 해당 모듈로 통신 (없을 경우 기본 kakao API 조회)
       - API 오류가 발생할 경우 → 등록된 다른 모듈 API로 통신 (순서는 yml파일 등록한 순서대로)
         - API 통신 성공할 경우 → 결과 리턴하고 종료
