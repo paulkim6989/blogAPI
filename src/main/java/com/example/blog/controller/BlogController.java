@@ -57,35 +57,31 @@ public class BlogController {
 		ResponseEntity<ResponseData> response = null;
 		try {
 
-		ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build();
-
-		response = this.validCheck(request);
-
-		if (response.getBody().getHeader().getCode() == 0) {
-		
-
-				response = this.callApi(request);
-				
-				if (response.getBody().getHeader().getCode() == 0) {
-					// 검색 이력 저장
-					History history = History.builder().query(request.getQuery()).build();
-					historyRepository.save(history);
-				} else {
-					// 성공하지 않을 경우 다른 검색 API를 추가로 조회
-					for(String key : configMap.keySet()) {
-						if (!key.equals(request.getApiName())) {
-							response = this.callApi(request);
-							if (response.getBody().getHeader().getCode() == 0) {
-								// 검색 이력 저장
-								History history = History.builder().query(request.getQuery()).build();
-								historyRepository.save(history);
-								break;
+			ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build();
+			response = this.validCheck(request);
+	
+			if (response.getBody().getHeader().getCode() == 0) {
+					response = this.callApi(request);
+					if (response.getBody().getHeader().getCode() == 0) {
+						// 검색 이력 저장
+						History history = History.builder().query(request.getQuery()).build();
+						historyRepository.save(history);
+					} else {
+						// 실패하였을 경우 다른 검색 API를 추가로 조회
+						for(String key : configMap.keySet()) {
+							if (!key.equals(request.getApiName())) {
+								response = this.callApi(request);
+								if (response.getBody().getHeader().getCode() == 0) {
+									// 검색 이력 저장
+									History history = History.builder().query(request.getQuery()).build();
+									historyRepository.save(history);
+									break;
+								}
 							}
 						}
 					}
-				}
-
-		}
+	
+			}
 
 		} catch (Exception e) {
 			log.error("Exception::{}", e);
@@ -136,7 +132,7 @@ public class BlogController {
 		Map<String,Map<String,String>>param = config.getParam();
 		Header header = Header.builder().code(0).message("Validation Check 정상").build();
 		
-		if (!request.getSort().isEmpty() && !"A".equals(request.getSort()) && !"T".equals(request.getSort())) {
+		if (request.getSort() != null && !"A".equals(request.getSort()) && !"T".equals(request.getSort())) {
 			header = Header.builder().code(1).message("정렬 순서(sort)를 정확하게 입력하세요.").build();
 		} else if (request.getPage() != null && request.getPage() > Integer.parseInt(param.get("page").get("max"))) {
 			header = Header.builder().code(1).message("결과 페이지 번호(page)는 " + param.get("page").get("max") + "보다 같거나 작아야 합니다.").build();

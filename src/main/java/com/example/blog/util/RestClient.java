@@ -55,10 +55,11 @@ public class RestClient {
      */
     public <E, T> ResponseEntity<E> request(String restURL, Config config, HttpMethod method, T request, Class<E> classOfResponse, MediaType mediaType )
     {
+    	this.globalConfig = config;
         RestTemplate restTemplate = restTemplateBuilder.setConnectTimeout(Duration.ofSeconds(4)).build();
         ResponseEntity<E> response                      = null;
+        Header header 	 								= null;
         ResponseData resData   							= null;
-        globalConfig = config;
         
         try {
 
@@ -66,9 +67,9 @@ public class RestClient {
             headers.setContentType(mediaType);
             headers.setAccept(Collections.singletonList(new MediaType("application","json")));
             
+            // apikey data header에 추가
             if(config.getApikey()!=null && config.getApikey().size() > 0) {
             	for (Apikey a : config.getApikey()) {
-            		log.info("Apikey -> {} : {}",a.getKey(),a.getValue());
             		headers.set(a.getKey(), a.getValue());
             	}
             }
@@ -79,21 +80,15 @@ public class RestClient {
             else
                 requestEntity                           = new HttpEntity<T>(request, headers);
             
-            log.info("restURL -> {}",restURL);
-            ResponseEntity<Map> responseEntity		= restTemplate.exchange(restURL, method, requestEntity, Map.class);
-            List<E> list = (List<E>)responseEntity.getBody().get(config.getDataField());
-
-            List<Map<String, String>> list2 = list.stream().map(e -> {
-                Map<String, String> map = new HashMap<>();
-                for (Map.Entry x : e.entrySet()) {
-                    config.getResponse().forEach((strKey, strValue)->{map.put(strKey, (String) x.getValue());});
-                }
-                return map;
-            }).collect(Collectors.toList());
-
-            Header header                           	= Header.builder().code(0).message("API 통신에 성공하였습니다.").build();
-            resData 									= ResponseData.builder().header(header).body(responseEntity.getBody().get(config.getDataField())).build();
-            response                                    = new ResponseEntity<E>((E)resData, HttpStatus.OK);
+            ResponseEntity<Map> responseEntity			= restTemplate.exchange(restURL, method, requestEntity, Map.class);
+            List<Map<String,String>> list 				= (List<Map<String,String>>)responseEntity.getBody().get(config.getDataField());
+            
+            Map<String,Object> resultMap = new HashMap<String,Object>();
+			resultMap.put("resultList", list.stream().map(this::translate).collect(Collectors.toList())); // json header 통일 
+            
+            header 										= Header.builder().code(0).message("API 통신에 성공하였습니다.").build();
+            resData 									= ResponseData.builder().header(header).body(resultMap).build();
+            response 									= new ResponseEntity<E>((E)resData, HttpStatus.OK);
         
         }catch(HttpClientErrorException | HttpServerErrorException e) {
             log.info("err getStatusCode::::::::::{}",e.getStatusCode());
@@ -105,7 +100,7 @@ public class RestClient {
             }
             else
             {
-                Header header                           = Header.builder().code(2).message(e.getResponseBodyAsString()).build();                         
+                header   		                        = Header.builder().code(2).message(e.getResponseBodyAsString()).build();                         
                 resData                                 = ResponseData.builder().header(header).build();
             }
             
@@ -120,14 +115,14 @@ public class RestClient {
             }
             else
             {
-                Header header                           = Header.builder().code(2).message(e.getResponseBodyAsString()).build();                         
+                header    		                       	= Header.builder().code(2).message(e.getResponseBodyAsString()).build();                         
                 resData                                 = ResponseData.builder().header(header).build();
             }
             
             response                                    = new ResponseEntity<E>((E)resData, e.getStatusCode());
         }catch(Exception e) {
             log.error("Exception::{}", e);
-            Header header                               = Header.builder().code(3).message(e.getMessage()).build();                          
+            header     			                        = Header.builder().code(3).message(e.getMessage()).build();                          
             resData                        				= ResponseData.builder().header(header).build();
             
             response                                    = new ResponseEntity<E>((E)resData, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -136,16 +131,17 @@ public class RestClient {
         return response;
         
     }
-
-    private Map<String, String> translate(Map<String,String> map) {
-        Map<String,String> response = globalConfig.getResponse();
-        HashMap<String, String> translatedMap = new HashMap<>(map);
-        response.forEach((strKey, strValue)->{putRemove(translatedMap, strKey, strValue);});
+    
+    /*
+     * 오픈 소스 결과 데이터 헤더를 하나로 변환해주는 메소드 (translate)
+     * @param map
+     */
+    public Map<String, String> translate(Map<String, String> map) {
+        HashMap<String, String> translatedMap = new HashMap<String, String>();
+        Map<String, String> responseMap = globalConfig.getResponse();
+		for (String key : responseMap.keySet()) {
+			translatedMap.put(key, map.get(responseMap.get(key)));
+		}
         return translatedMap;
-    }
-
-    private Map<String, String> putRemove(Map<String, String> map, String originalKey, String newKey) {
-        map.put(newKey, map.remove(originalKey));
-        return map;
     }
 }

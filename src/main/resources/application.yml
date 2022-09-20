@@ -14,7 +14,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true   
@@ -43,13 +43,13 @@ api:
         size:
           name: size
           max: 50
-      dataField: document
+      dataField: documents
       response:
         title: title
-        contents: description
-        url: link
-        blogname: bloggername
-        datetime: postdate
+        contents: contents
+        url: url
+        blogname: blogname
+        datetime: datetime
 
     naver:      
       name: naver
