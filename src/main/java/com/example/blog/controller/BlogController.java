@@ -54,10 +54,8 @@ public class BlogController {
 									@RequestParam(value="page", required = false) Integer page,
 									@RequestParam(value="size", required = false) Integer size,
 									@RequestParam(value="apiName", required = false, defaultValue=defaultApiName) String apiName) throws Exception {
-	
 		ResponseEntity<ResponseData> response = null;
-		Header header = null;
-		ResponseData resData = null;
+		try {
 
 		ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build();
 
@@ -65,7 +63,7 @@ public class BlogController {
 
 		if (response.getBody().getHeader().getCode() == 0) {
 		
-			try {
+
 				response = this.callApi(request);
 				
 				if (response.getBody().getHeader().getCode() == 0) {
@@ -86,12 +84,14 @@ public class BlogController {
 						}
 					}
 				}
-			} catch (Exception e) {
-				log.error("Exception::{}", e);
-	            header                               = Header.builder().code(3).message(e.getMessage()).build();
-				resData                        = ResponseData.builder().header(header).build();
-	            response                                    = new ResponseEntity<ResponseData>(resData, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
+
+		}
+
+		} catch (Exception e) {
+			log.error("Exception::{}", e);
+			Header header = Header.builder().code(3).message(e.getMessage()).build();
+			ResponseData resData = ResponseData.builder().header(header).build();
+			response = new ResponseEntity<ResponseData>(resData, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		return response;
@@ -119,7 +119,7 @@ public class BlogController {
 	
 	@Async
 	public ResponseEntity<ResponseData> callApi(ApiRequest request) {
-		System.out.println("apiName : " + request.getApiName());
+
 		Config config = configMap.get(request.getApiName());
 		String url = config.getUrl();
 		Map<String,Map<String,String>>param = config.getParam();
@@ -145,9 +145,7 @@ public class BlogController {
 		}
 
 		ResponseData resData = ResponseData.builder().header(header).build();
-		ResponseEntity<ResponseData> response = new ResponseEntity<ResponseData>(resData, HttpStatus.OK);
-
-		return response;
+		return new ResponseEntity<ResponseData>(resData, HttpStatus.OK);
 	}
 
 }
