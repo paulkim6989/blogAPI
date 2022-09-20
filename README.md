@@ -5,20 +5,13 @@
 
 ### 1. 블로그 검색 (/v1/search/blog)
   - Request Parameter
-    - query (String) : 검색을 원하는 질의어, Required(O)
-    - apiName (String) : 검색 오픈 서버 모듈명, 기본값-kakao, (e.g) naver, Required(X)
-    - sort (String) : 결과 문서 정렬 방식, A - 정확도순, T - 최신순, 기본값-A, Required(X)
-    - page (Integer) : 결과 페이지 번호, 기본값은 오픈 API의 기본값, Required(X)
-    - size (Integer) : 한 페이지에 보여질 문서 수, 기본값은 오픈 API의 기본값, Required(X)
-    
     Name | Type | Description | Default Value | Required
     ---|---|---|---|---|
     query | String | 검색을 원하는 질의어 | | O
     apiName | String | 검색 오픈 서버 모듈명 (e.g) kakao, naver | kakao | X
     sort | String | 결과 문서 정렬 방식 (A - 정확도순, T - 최신순) | A | X
     page | Integer | 결과 페이지 번호 | 오픈 API의 page 기본값 | X
-    size | Integer | 한 페이지에 보여질 문서 수 | 오픈 API의 size 기본값 | X
-    
+    size | Integer | 한 페이지에 보여질 문서 수 | 오픈 API의 size 기본값 | X    
 
   - Response header
     - code 
@@ -29,13 +22,15 @@
     - message
       - 성공 및 오류 메세지
   
-  - Response Body : resultList
-    - title (String) : 블로그 글 제목
-    - contents (String) : 블로그 글 요약
-    - url (String) : 블로그 글 URL
-    - blogname (String) : 블로그의 이름
-    - thumbnail (String) : 검색 시스템에서 추출한 대표 미리보기 이미지 URL
-    - datetime (Datetime) : 블로그 글 작성시간
+  - Response Body
+    - resultList
+    - Name | Type | Description
+    ---|---|---|
+    title | String | 블로그 글 제목
+    contents | String | 블로그 글 요약
+    url | String | 블로그 글 URL
+    blogname | String | 블로그의 이름
+    datetime | Datetime | 블로그 글 작성시간    
     
   - 오픈 API 서버 통신 방식
     - apiName으로 전달 받은 모듈명 있으면 해당 모듈로 통신 (없을 경우 기본 kakao API 조회)
