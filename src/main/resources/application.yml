@@ -66,4 +66,4 @@ api:
         size:
           name: display
           max: 100
-        dataField: item
+      dataField: item
