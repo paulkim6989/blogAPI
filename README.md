@@ -9,7 +9,7 @@
       Name | Type | Description | Default Value | Required
       ---|---|---|---|---|
       query | String | 검색을 원하는 질의어 | | O
-      apiName | String | 검색 오픈 서버 모듈명 (e.g) kakao, naver | kakao | X
+      apiName | String | 검색 오픈 서버 module명 (e.g) kakao, naver | kakao | X
       sort | String | 결과 문서 정렬 방식 (A - 정확도순, T - 최신순) | A | X
       page | Integer | 결과 페이지 번호 | 오픈 API의 page 기본값 | X
       size | Integer | 한 페이지에 보여질 문서 수 | 오픈 API의 size 기본값 | X    
