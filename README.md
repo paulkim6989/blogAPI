@@ -34,24 +34,25 @@
         blogname | String | 블로그의 이름
         datetime | Datetime | 블로그 글 작성시간    
     
-  - #### 멀티 모듈 구성
-    - ##### 멀티 모듈 필요 정보 (application.yml 파일)
+  - #### multi module 구성
+    - ##### multi module 필요 정보 (application.yml 파일)
       - api > config 하단에 추가
-      - name : 모듈명
-      - url : 모듈 API URL
+      - module name (e.g kakao, naver)
+      - name : module명
+      - url : module API URL
       - apikey : header에 추가할 apikey list 형태로 추가 (key : value)        
-      - param : 모듈 request parameter 정보
+      - param : module request parameter 정보
         - query: "검색 키워드" 관련 정보
-          - name: 모듈에서 "검색 키워드" param 명
+          - name: module에서 "검색 키워드" param 명
         - sort: "정렬순서" 관련 정보
-          - name: 모듈에서 "정렬순서" param 명
-          - A: 모듈에서 정확도순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 accuracy)
-          - T: 모듈에서 최신순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 recency)
+          - name: module에서 "정렬순서" param 명
+          - A: module에서 정확도순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 accuracy)
+          - T: module에서 최신순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 recency)
         - page: "페이지 번호" 관련 정보
-          - name: 모듈에서 "페이지 번호" param 명
+          - name: module에서 "페이지 번호" param 명
           - max: "페이지 번호" 최대값
         - size: "결과 레코드 수" 관련 정보
-          - name: 모듈에서 "결과 레코드 수" param 명
+          - name: module에서 "결과 레코드 수" param 명
           - max: "결과 레코드 수" 최대값
       - dataField: Response json에서 데이터 키값 (예 : kakao에서는 documents)
       - response: 결과 데이터 관련 필요 정보
