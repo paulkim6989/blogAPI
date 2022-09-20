@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.example.blog.model.Config;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class RestClient {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(mediaType);
-            headers.setAccept(Collections.singletonList(new org.springframework.http.MediaType("application","json")));
+            headers.setAccept(Collections.singletonList(new MediaType("application","json")));
             
             if(config.getApikey()!=null && config.getApikey().size() > 0) {
             	for (Apikey a : config.getApikey()) {
@@ -82,9 +83,13 @@ public class RestClient {
             ResponseEntity<Map> responseEntity		= restTemplate.exchange(restURL, method, requestEntity, Map.class);
             List<E> list = (List<E>)responseEntity.getBody().get(config.getDataField());
 
-            list.stream()
-                    .map(this::translate(config.getResponse()))
-                    .collect(Collectors.toList());
+            List<Map<String, String>> list2 = list.stream().map(e -> {
+                Map<String, String> map = new HashMap<>();
+                for (Map.Entry x : e.entrySet()) {
+                    config.getResponse().forEach((strKey, strValue)->{map.put(strKey, (String) x.getValue());});
+                }
+                return map;
+            }).collect(Collectors.toList());
 
             Header header                           	= Header.builder().code(0).message("API 통신에 성공하였습니다.").build();
             resData 									= ResponseData.builder().header(header).body(responseEntity.getBody().get(config.getDataField())).build();
@@ -132,12 +137,15 @@ public class RestClient {
         
     }
 
-    private Map<String, String> translate(Map<String,String> response) {
-
+    private Map<String, String> translate(Map<String,String> map) {
+        Map<String,String> response = globalConfig.getResponse();
         HashMap<String, String> translatedMap = new HashMap<>(map);
-
-        translate(translatedMap, "id", "sample_id");
-        translate(translatedMap, "display", "sample");
+        response.forEach((strKey, strValue)->{putRemove(translatedMap, strKey, strValue);});
         return translatedMap;
+    }
+
+    private Map<String, String> putRemove(Map<String, String> map, String originalKey, String newKey) {
+        map.put(newKey, map.remove(originalKey));
+        return map;
     }
 }
