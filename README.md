@@ -24,7 +24,7 @@
   
   - Response Body
     - resultList
-    - Name | Type | Description
+    Name | Type | Description
     ---|---|---|
     title | String | 블로그 글 제목
     contents | String | 블로그 글 요약
