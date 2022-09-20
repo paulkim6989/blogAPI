@@ -20,6 +20,7 @@ public class Config {
 	private String dataField;
 	private List<Apikey> apikey;
 	private Map<String,Map<String,String>> param;
+	private Map<String,String> response;
 	
 	public void setApikey(final List<Apikey> apikey) {
        this.apikey = apikey;

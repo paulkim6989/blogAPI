@@ -44,6 +44,12 @@ api:
           name: size
           max: 50
       dataField: document
+      response:
+        title: title
+        contents: description
+        url: link
+        blogname: bloggername
+        datetime: postdate
 
     naver:      
       name: naver
@@ -66,4 +72,11 @@ api:
         size:
           name: display
           max: 100
-      dataField: item
+      dataField: items
+      response:
+        title: title
+        contents: description
+        url: link
+        blogname: bloggername
+        datetime: postdate
+
