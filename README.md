@@ -124,8 +124,8 @@
         ```
         
     - ##### Multi-module 통신 방식
-      - apiName으로 전달 받은 모듈명 있으면 해당 모듈로 통신 (없을 경우 기본 kakao API 조회)
-      - API 오류가 발생할 경우 → 등록된 다른 모듈 API로 통신 (순서는 yml파일 등록한 순서대로)
+      - apiName으로 전달 받은 module명 있으면 해당 module로 통신 (없을 경우 기본 kakao API 조회)
+      - API 오류가 발생할 경우 → 등록된 다른 module API로 통신 (순서는 yml파일 등록한 순서대로)
         - API 통신 성공할 경우 → 결과 리턴하고 종료
         - API 오류가 발생할 경우 → 등록된 또 다른 API로 통신   
 
