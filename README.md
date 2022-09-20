@@ -34,8 +34,8 @@
         blogname | String | 블로그의 이름
         datetime | Datetime | 블로그 글 작성시간    
     
-  - #### 멀티 모듈 구성 가이드
-    - ##### application.yml 파일에 모듈 정보 추가
+  - #### 멀티 모듈 구성
+    - ##### application.yml 파일에 모듈 정보 
       - api > config 하단에 추가
       - name : 모듈명
       - url : 모듈 API URL
@@ -61,7 +61,7 @@
         - blogname: "블로그명"을 나타내는 데이터 header
         - datetime: "작성시간"을 나타내는 데이터 header
   
-    - ##### application.yml 파일 작성 
+    - ##### application.yml 파일 
       ```yml
         api:
           config:
