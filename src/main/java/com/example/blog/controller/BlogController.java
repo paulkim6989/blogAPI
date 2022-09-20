@@ -61,7 +61,9 @@ public class BlogController {
 
 		ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build();
 
-		if (this.validCheck(request).getCode() == 0) {
+		response = this.validCheck(request);
+
+		if (response.getBody().getHeader().getCode() == 0) {
 		
 			try {
 				response = this.callApi(request);
