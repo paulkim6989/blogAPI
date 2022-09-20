@@ -1,22 +1,31 @@
 # blogAPI
 오픈 API를 이용한 "블로그 검색 서비스"
 
-API 명세
+## API 명세
 
-1. 블로그 검색 (/v1/search/blog)
+### 1. 블로그 검색 (/v1/search/blog)
   - Request Parameter
     - query (String) : 검색을 원하는 질의어, Required(O)
     - apiName (String) : 검색 오픈 서버 모듈명, 기본값-kakao, (e.g) naver, Required(X)
     - sort (String) : 결과 문서 정렬 방식, A - 정확도순, T - 최신순, 기본값-A, Required(X)
     - page (Integer) : 결과 페이지 번호, 기본값은 오픈 API의 기본값, Required(X)
     - size (Integer) : 한 페이지에 보여질 문서 수, 기본값은 오픈 API의 기본값, Required(X)
+    
+    Name | Type | Description | Default Value | Required
+    ---|---|---|
+    query | String | 검색을 원하는 질의어 | | O
+    apiName | String | 검색 오픈 서버 모듈명 (e.g) kakao, naver | kakao | X
+    sort | String | 결과 문서 정렬 방식 (A - 정확도순, T - 최신순) | A | X
+    page | Integer | 결과 페이지 번호 | 오픈 API의 page 기본값 | X
+    size | Integer | 한 페이지에 보여질 문서 수 | 오픈 API의 size 기본값 | X
+    
 
   - Response header
     - code 
       - 0 : 성공
-      - 1 : Validation 오류
-      - 2 : API KEY 오류
-      - 3 : 서버 오류
+      - 1 : validation 오류
+      - 2 : 권한 오류 (API KEY)
+      - 3 : Internal 서버 오류
     - message
       - 성공 및 오류 메세지
   
@@ -35,7 +44,7 @@ API 명세
       - API 오류가 발생할 경우 등록된 또 다른 API로 통신   
 
 
-2. 인기검색어 목록 (/v1/search/popularKeyword)
+### 2. 인기검색어 목록 (/v1/search/popularKeyword)
   - Request Parameter : 없음
   - Response Body
     - rank (Integer) : 많이 검색된 순위
