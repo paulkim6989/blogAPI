@@ -1,0 +1,67 @@
+spring:
+  # H2 Setting Info (H2 Console에 접속하기 위한 설정정보 입력)
+  h2:
+    console:
+      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
+      path: /h2-console  # H2 Console의 Path
+  # Database Setting Info (Database를 H2로 사용하기 위해 H2연결 정보 입력)
+  datasource:
+    driver-class-name: org.h2.Driver  # Database를 H2로 사용하겠다.
+    url: jdbc:h2:file:~/develop/h2/blog_db;AUTO_SERVER=TRUE  # H2 접속 정보
+    username: sa  # H2 접속 시 입력할 username 정보 (원하는 것으로 입력)
+    password:  # H2 접속 시 입력할 password 정보 (원하는 것으로 입력)
+    
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true   
+
+server:
+  port: 8081
+  
+api:
+  config:
+    kakao:
+      name: kakao 
+      url: https://dapi.kakao.com/v2/search/blog
+      apikey:
+        - key: Authorization
+          value: KakaoAK 3966cb8befe5e16c3f0b62d153eebcd2
+      param:
+        query:
+          name: query
+        sort:
+          name: sort
+          A: accuracy
+          T: recency
+        page:
+          name: page
+          max: 50
+        size:
+          name: size
+          max: 50
+
+    naver:      
+      name: naver
+      url: https://openapi.naver.com/v1/search/blog.json  
+      apikey: 
+        - key: X-Naver-Client-Id
+          value: JKGScC4IEgDbbu8Dn0Ci
+        - key: X-Naver-Client-Secret
+          value: 7jgV9EbcGR
+      param:
+        query:
+          name: query
+        sort:
+          name: sort
+          A: sim
+          T: date
+        page:
+          name: start
+          max: 1000
+        size:
+          name: display
+          max: 100
