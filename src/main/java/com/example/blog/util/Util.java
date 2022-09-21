@@ -18,7 +18,8 @@ public class Util {
     /**
      * Json String to Bean  Convert
      * 
-     * @param src
+     * @param json
+     * @param classOfT
      * @return
      */
     public static <T> T JsonTobean( String json, Class<T> classOfT )
@@ -27,15 +28,6 @@ public class Util {
             return null;
         
         return new Gson().fromJson(json, classOfT );
-    }
-    
-    
-    public static String nvl(String str, String nullStr)
-    {
-        if (str == null || str.trim().length() == 0)
-            return nullStr;
-        else
-            return str;
     }
    
 }

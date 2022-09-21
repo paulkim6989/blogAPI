@@ -39,7 +39,7 @@ public class BlogController {
        this.configMap = configMap;
     }
 	
-	private static final String defaultApiName = "naver"; // apiName 없을 때 기본값
+	private static final String defaultApiName = "kakao"; // apiName 없을 때 기본값
 	
 	@Autowired
 	private HistoryRepository historyRepository;
