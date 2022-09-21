@@ -130,7 +130,7 @@
         - API 오류가 발생할 경우 → 등록된 또 다른 API로 통신   
 
 
-### 2. 인기검색어 목록 조회 (/v1/search/popularKeyword)
+### 2. 인기 검색어 목록 (/v1/search/popularKeyword)
   - #### Request 
     - ##### Parameter : 없음
   - #### Response
@@ -173,4 +173,4 @@
 
 ### 4. 외부 라이브러리
   - #### gson
-  	- ##### json을 bean형태로 변경해주는 util 메소드를 위해 사용 (Util.java > JsonTobean)
+  	- ##### json을 bean형태로 변경해주는 util 메소드에서 사용 (Util.java > JsonTobean)
