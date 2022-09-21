@@ -35,13 +35,12 @@
         datetime | Datetime | 블로그 글 작성시간    
     
   - #### 다중 검색 API 설정
-    - ##### 다중 검색 API 관련 필요 정보 (application.yml 파일)
-      - api > config 하단에 추가
-      - API name (e.g kakao, naver)
-      - name : API명
-      - url : API URL
-      - apikey : header에 추가할 apikey list 형태로 추가 (key : value)        
-      - param : API request parameter 정보
+    - ##### 다중 검색 API 관련 필요 정보 (application.yml 파일 > api > config)
+      - ##### API name (e.g kakao, naver)
+      - ##### name : API명
+      - ##### url : API URL
+      - ##### apikey : header에 추가할 apikey list 형태로 추가 (key : value)        
+      - ##### param : API request parameter 정보
         - query: "검색 키워드" 관련 정보
           - name: API에서 "검색 키워드" param 명
         - sort: "정렬순서" 관련 정보
@@ -54,8 +53,8 @@
         - size: "결과 레코드 수" 관련 정보
           - name: API에서 "결과 레코드 수" param 명
           - max: "결과 레코드 수" 최대값
-      - dataField: Response json에서 데이터 키값 (예 : kakao에서는 documents)
-      - response: 결과 데이터 관련 필요 정보
+      - ##### dataField: Response json에서 데이터 키값 (예 : kakao에서는 documents)
+      - ##### response: 결과 데이터 관련 필요 정보
         - title: "제목"을 나타내는 데이터 header
         - contents: "내용"을 나타내는 데이터 header
         - url: "해당 블로드 게시글 URL"을 나타내는 데이터 header
@@ -161,11 +160,11 @@
 
 ### 2. API 특징
   - #### 다중 검색 API 구성
-  	- ##### config 정보 파일(yml)로 구성 (변경, 추가 가능)
-	- ##### response data header 통일
-	- ##### 특정 API 장애 시 타 API 호출 가능
-  - #### Header 정보 코드 및 체계화
-  - #### 비동기 처리를 통한 대량 트래픽 처리
+  	- ##### config 정보 파일(yml)로 구성 (새로운 검색 API 소스 추가 및 설정 변경에 용이)
+	- ##### API의 response 결과 데이터 포맷 통일 (사용 시 오픈소스 별로 parsing 따로 할 필요 없음)
+	- ##### 특정 API 장애 시 타 API 호출 가능 (데이터 안정성 보장)
+  - #### Header 정보 코드 및 체계화 (0~3 코드 정의, 사용 시 코드에 따라 알림 or retry 정책 적용 가능)
+  - #### 비동기 처리를 통한 대량 트래픽 처리 (API 통신부 Async로 호출 → 대량 트래픽 처리 시 속도 향상)
       
 ### 3. 테스트 케이스
   - #### 테스트 케이스 링크
