@@ -167,3 +167,6 @@
   - #### Header 정보 코드 및 체계화
   - #### 비동기 처리를 통한 대량 트래픽 처리
       
+### 3. 테스트 케이스
+  - #### 테스트 케이스 링크
+  	- ##### [Test Case] (https://github.com/paulkim6989/blogAPI/blob/main/blogAPI_TestCase_0921.xlsx)
