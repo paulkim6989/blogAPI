@@ -41,16 +41,16 @@
       - ##### url : API URL
       - ##### apikey : header에 추가할 apikey list 형태로 추가 (key : value)        
       - ##### param : API request parameter 정보
-        - query: "검색 키워드" 관련 정보
+        - ##### query: "검색 키워드" 관련 정보
           - name: API에서 "검색 키워드" param 명
-        - sort: "정렬순서" 관련 정보
+        - ##### sort: "정렬순서" 관련 정보
           - name: API에서 "정렬순서" param 명
           - A: API에서 정확도순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 accuracy)
           - T: API에서 최신순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 recency)
-        - page: "페이지 번호" 관련 정보
+        - ##### page: "페이지 번호" 관련 정보
           - name: API에서 "페이지 번호" param 명
           - max: "페이지 번호" 최대값
-        - size: "결과 레코드 수" 관련 정보
+        - ##### size: "결과 레코드 수" 관련 정보
           - name: API에서 "결과 레코드 수" param 명
           - max: "결과 레코드 수" 최대값
       - ##### dataField: Response json에서 데이터 키값 (예 : kakao에서는 documents)
@@ -123,8 +123,8 @@
         ```
         
     - ##### 다중 검색 API 장애 시 통신 방식
-      - apiName으로 전달 받은 API명 있으면 해당 API로 통신 (없을 경우 기본 kakao API 조회)
-      - API 오류가 발생할 경우 → 등록된 다른 API로 통신 (순서는 yml파일 등록한 순서대로)
+      - ##### apiName으로 전달 받은 API명 있으면 해당 API로 통신 (없을 경우 기본 kakao API 조회)
+      - ##### API 오류가 발생할 경우 → 등록된 다른 API로 통신 (순서는 yml파일 등록한 순서대로)
         - API 통신 성공할 경우 → 결과 리턴하고 종료
         - API 오류가 발생할 경우 → 등록된 또 다른 API로 통신   
 
