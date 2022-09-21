@@ -130,7 +130,7 @@
         - API 오류가 발생할 경우 → 등록된 또 다른 API로 통신   
 
 
-### 2. 인기검색어 목록 (/v1/search/popularKeyword)
+### 2. 인기검색어 목록 조회 (/v1/search/popularKeyword)
   - #### Request 
     - ##### Parameter : 없음
   - #### Response
@@ -141,4 +141,13 @@
         rank | Integer | 많이 검색된 순위
         query | String | 검색된 키워드
         cnt | Integer | 검색된 횟수
+        
+### 3. 실행환경
+  - #### jdk 버전 : 17.0.2
+  - #### server port : 8081
+  - #### API 호출 URL
+    - ##### 블로그 검색 API : localhost:8081/v1/search/blog
+    - ##### 인기검색어 목록 조회 API : localhost:8081/v1/search/popularKeyword
+  - #### jar 다운로드 링크
+    - ##### [Executable Jar] (https://github.com/paulkim6989/blogAPI/blob/main/blog-0.0.1-SNAPSHOT.jar)
       
