@@ -9,7 +9,7 @@
       Name | Type | Description | Default Value | Required
       ---|---|---|---|---|
       query | String | 검색을 원하는 질의어 | | O
-      apiName | String | 검색 오픈 서버 module명 (e.g) kakao, naver | kakao | X
+      apiName | String | 검색 오픈 서버 API명 (e.g) kakao, naver | kakao | X
       sort | String | 결과 문서 정렬 방식 (A - 정확도순, T - 최신순) | A | X
       page | Integer | 결과 페이지 번호 | 오픈 API의 page 기본값 | X
       size | Integer | 한 페이지에 보여질 문서 수 | 오픈 API의 size 기본값 | X    
@@ -34,25 +34,25 @@
         blogname | String | 블로그의 이름
         datetime | Datetime | 블로그 글 작성시간    
     
-  - #### Multi-module 구성
-    - ##### Multi-module 필요 정보 (application.yml 파일)
+  - #### 다중 검색 API 설정
+    - ##### 다중 검색 API 관련 필요 정보 (application.yml 파일)
       - api > config 하단에 추가
-      - module name (e.g kakao, naver)
-      - name : module명
-      - url : module API URL
+      - API name (e.g kakao, naver)
+      - name : API명
+      - url : API URL
       - apikey : header에 추가할 apikey list 형태로 추가 (key : value)        
-      - param : module request parameter 정보
+      - param : API request parameter 정보
         - query: "검색 키워드" 관련 정보
-          - name: module에서 "검색 키워드" param 명
+          - name: API에서 "검색 키워드" param 명
         - sort: "정렬순서" 관련 정보
-          - name: module에서 "정렬순서" param 명
-          - A: module에서 정확도순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 accuracy)
-          - T: module에서 최신순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 recency)
+          - name: API에서 "정렬순서" param 명
+          - A: API에서 정확도순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 accuracy)
+          - T: API에서 최신순으로 정렬할 때 보내야 하는 data (예 : kakao에서는 recency)
         - page: "페이지 번호" 관련 정보
-          - name: module에서 "페이지 번호" param 명
+          - name: API에서 "페이지 번호" param 명
           - max: "페이지 번호" 최대값
         - size: "결과 레코드 수" 관련 정보
-          - name: module에서 "결과 레코드 수" param 명
+          - name: API에서 "결과 레코드 수" param 명
           - max: "결과 레코드 수" 최대값
       - dataField: Response json에서 데이터 키값 (예 : kakao에서는 documents)
       - response: 결과 데이터 관련 필요 정보
@@ -123,9 +123,9 @@
                 datetime: postdate
         ```
         
-    - ##### Multi-module 통신 방식
-      - apiName으로 전달 받은 module명 있으면 해당 module로 통신 (없을 경우 기본 kakao API 조회)
-      - API 오류가 발생할 경우 → 등록된 다른 module API로 통신 (순서는 yml파일 등록한 순서대로)
+    - ##### 다중 검색 API 장애 시 통신 방식
+      - apiName으로 전달 받은 API명 있으면 해당 API로 통신 (없을 경우 기본 kakao API 조회)
+      - API 오류가 발생할 경우 → 등록된 다른 API로 통신 (순서는 yml파일 등록한 순서대로)
         - API 통신 성공할 경우 → 결과 리턴하고 종료
         - API 오류가 발생할 경우 → 등록된 또 다른 API로 통신   
 
@@ -160,10 +160,10 @@
     - ##### [Executable Jar] (https://github.com/paulkim6989/blogAPI/blob/main/blog-0.0.1-SNAPSHOT.jar)
 
 ### 2. API 특징
-  - #### Multi-Module 구성
+  - #### 다중 검색 API 구성
   	- ##### config 정보 파일(yml)로 구성 (변경, 추가 가능)
 	- ##### response data header 통일
-	- ##### 특정 module API 장애 시 타 API 호출 가능
+	- ##### 특정 API 장애 시 타 API 호출 가능
   - #### Header 정보 코드 및 체계화
   - #### 비동기 처리를 통한 대량 트래픽 처리
       
