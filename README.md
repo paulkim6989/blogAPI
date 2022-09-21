@@ -154,8 +154,8 @@
   - #### jdk 버전 : 17.0.2
   - #### server port : 8081
   - #### API 호출 URL
-    - ##### 블로그 검색 API : localhost:8081/v1/search/blog
-    - ##### 인기검색어 목록 조회 API : localhost:8081/v1/search/popularKeyword
+    - ##### 블로그 검색 API : http://localhost:8081/v1/search/blog
+    - ##### 인기검색어 목록 조회 API : http://localhost:8081/v1/search/popularKeyword
   - #### jar 다운로드 링크
     - ##### [Executable Jar] (https://github.com/paulkim6989/blogAPI/blob/main/blog-0.0.1-SNAPSHOT.jar)
 
