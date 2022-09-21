@@ -173,4 +173,4 @@
 
 ### 4. 외부 라이브러리
   - #### gson
-  	- ##### json을 bean형태로 변경해주는 util 기능을 위해 사용 (Util.java > JsonTobean)
+  	- ##### json을 bean형태로 변경해주는 util 메소드를 위해 사용 (Util.java > JsonTobean)
