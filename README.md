@@ -136,10 +136,10 @@
   - #### Response
 	- ##### header
 		- ##### code 
-		- 0 : 성공
-		- 3 : Internal 서버 오류
+			- 0 : 성공
+			- 3 : Internal 서버 오류
 		- ##### message
-		- 성공 및 오류 메세지
+			- 성공 및 오류 메세지
     - ##### Body
       - ##### resultList
         Name | Type | Description
