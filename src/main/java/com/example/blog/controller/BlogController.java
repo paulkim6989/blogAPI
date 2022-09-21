@@ -49,14 +49,13 @@ public class BlogController {
 
 	@RequestMapping("/blog")
 	@ResponseBody
-	public ResponseEntity<ResponseData> SearchBlog(@RequestParam(value="query", required = true) String query,
+	public ResponseEntity<ResponseData> SearchBlog(@RequestParam(value="query", required = false) String query,
 									@RequestParam(value="sort", required = false) String sort,
 									@RequestParam(value="page", required = false) Integer page,
 									@RequestParam(value="size", required = false) Integer size,
 									@RequestParam(value="apiName", required = false, defaultValue=defaultApiName) String apiName) throws Exception {
 		ResponseEntity<ResponseData> response = null;
 		try {
-
 			ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build();
 			response = this.validCheck(request);
 	
@@ -131,8 +130,12 @@ public class BlogController {
 		Config config = configMap.get(request.getApiName());
 		Map<String,Map<String,String>>param = config.getParam();
 		Header header = Header.builder().code(0).message("Validation Check 정상").build();
-		
-		if (request.getSort() != null && !"A".equals(request.getSort()) && !"T".equals(request.getSort())) {
+
+		if (request.getQuery() == null ) {
+			header = Header.builder().code(1).message("검색어(query)는 필수값 입니다.").build();
+		} else if (request.getQuery().trim().isEmpty()) {
+			header = Header.builder().code(1).message("검색어(query)는 값이 반드시 있어야 합니다.").build();
+		} else if (request.getSort() != null && !"A".equals(request.getSort()) && !"T".equals(request.getSort())) {
 			header = Header.builder().code(1).message("정렬 순서(sort)를 정확하게 입력하세요.").build();
 		} else if (request.getPage() != null && request.getPage() > Integer.parseInt(param.get("page").get("max"))) {
 			header = Header.builder().code(1).message("결과 페이지 번호(page)는 " + param.get("page").get("max") + "보다 같거나 작아야 합니다.").build();
