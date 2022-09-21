@@ -134,6 +134,12 @@
   - #### Request 
     - ##### Parameter : 없음
   - #### Response
+	- ##### header
+		- ##### code 
+		- 0 : 성공
+		- 3 : Internal 서버 오류
+		- ##### message
+		- 성공 및 오류 메세지
     - ##### Body
       - ##### resultList
         Name | Type | Description
@@ -141,8 +147,10 @@
         rank | Integer | 많이 검색된 순위
         query | String | 검색된 키워드
         cnt | Integer | 검색된 횟수
+
+## API 설명
         
-### 3. 실행환경
+### 1. 실행환경
   - #### jdk 버전 : 17.0.2
   - #### server port : 8081
   - #### API 호출 URL
@@ -150,4 +158,12 @@
     - ##### 인기검색어 목록 조회 API : localhost:8081/v1/search/popularKeyword
   - #### jar 다운로드 링크
     - ##### [Executable Jar] (https://github.com/paulkim6989/blogAPI/blob/main/blog-0.0.1-SNAPSHOT.jar)
+
+### 2. API 특징
+  - #### Multi-Module 구성
+  	- ##### config 정보 파일(yml)로 구성 (변경, 추가 가능)
+	- ##### response data header 통일
+	- ##### 특정 module API 장애 시 타 API 호출 가능
+  - #### Header 정보 코드 및 체계화
+  - #### 비동기 처리를 통한 대량 트래픽 처리
       
