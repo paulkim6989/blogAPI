@@ -170,3 +170,7 @@
 ### 3. 테스트 케이스
   - #### 테스트 케이스 링크
   	- ##### [Test Case] (https://github.com/paulkim6989/blogAPI/blob/main/blogAPI_TestCase_0921.xlsx)
+
+### 4. 외부 라이브러리
+  - #### gson
+  	- ##### json을 bean형태로 변경해주는 util 기능을 위해 사용 (Util.java > JsonTobean)

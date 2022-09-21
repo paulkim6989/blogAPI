@@ -47,6 +47,9 @@ public class BlogController {
 	@Autowired
 	private RestClient restClient;
 
+	/*
+	 * blog 검색 API
+	 */
 	@RequestMapping("/blog")
 	@ResponseBody
 	public ResponseEntity<ResponseData> SearchBlog(@RequestParam(value="query", required = false) String query,
@@ -56,20 +59,21 @@ public class BlogController {
 									@RequestParam(value="apiName", required = false, defaultValue=defaultApiName) String apiName) throws Exception {
 		ResponseEntity<ResponseData> response = null;
 		try {
-			ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build();
-			response = this.validCheck(request);
+
+			ApiRequest request = ApiRequest.builder().query(query).sort(sort).page(page).size(size).apiName(apiName).build(); // Request parameter 객체화
+			response = this.validCheck(request); // Request parameter Validation Check
 	
 			if (response.getBody().getHeader().getCode() == 0) {
-					response = this.callApi(request);
+					response = this.callApi(request); // Open API Call
 					if (response.getBody().getHeader().getCode() == 0) {
 						// 검색 이력 저장
 						History history = History.builder().query(request.getQuery()).build();
 						historyRepository.save(history);
 					} else {
-						// 실패하였을 경우 다른 검색 API를 추가로 조회
+						// 실패하였을 경우 다른 검색 API 추가로 조회
 						for(String key : configMap.keySet()) {
 							if (!key.equals(request.getApiName())) {
-								response = this.callApi(request);
+								response = this.callApi(request); // Open API Call
 								if (response.getBody().getHeader().getCode() == 0) {
 									// 검색 이력 저장
 									History history = History.builder().query(request.getQuery()).build();
@@ -91,7 +95,10 @@ public class BlogController {
 		
 		return response;
 	}
-	
+
+	/*
+	 * 인기검색어 목록 조회 API
+	 */
 	@RequestMapping("/popularKeyword")
 	@ResponseBody
     public ResponseEntity<ResponseData> searchPopularKeyword() {
@@ -111,7 +118,10 @@ public class BlogController {
 		}
         return response;
     }
-	
+
+	/*
+	 * API 호출 메소드 (yml에 정의된 config 정보 기반으로 호출)
+	 */
 	@Async
 	public ResponseEntity<ResponseData> callApi(ApiRequest request) {
 
@@ -125,7 +135,10 @@ public class BlogController {
 		if (request.getSize() != null) reqUrl.queryParam(param.get("size").get("name"), request.getSize());
 		return restClient.request(reqUrl.build().toUriString(), config, HttpMethod.GET, null, ResponseData.class, MediaType.APPLICATION_JSON);
     }
-	
+
+	/*
+	 * Request Parameter Validation Check 메소드
+	 */
 	public ResponseEntity<ResponseData> validCheck(ApiRequest request) {
 		Config config = configMap.get(request.getApiName());
 		Map<String,Map<String,String>>param = config.getParam();
